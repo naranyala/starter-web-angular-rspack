@@ -1,76 +1,259 @@
-# Angular Webpack Example
+# Angular Rspack Starter
 
-This example shows how to extend webpack in an Angular build.
+A modern Angular 19 starter project configured with Rspack bundler and Bun runtime for improved build performance.
 
-Please read [How to Customize Your Angular Build With Webpack](https://developer.okta.com/blog/2019/12/09/angular-webpack) to see how this app was created.
+## Table of Contents
 
-**Prerequisites:** [Node.js](https://nodejs.org/) v12+.
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Available Scripts](#available-scripts)
+- [Configuration](#configuration)
+- [Build System Comparison](#build-system-comparison)
+- [Key Dependencies](#key-dependencies)
+- [Code Quality](#code-quality)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-> [Okta](https://developer.okta.com/) has Authentication and User Management APIs that reduce development time with instant-on, scalable user infrastructure. Okta's intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
+## Overview
 
-* [Getting Started](#getting-started)
-* [Links](#links)
-* [Help](#help)
-* [License](#license)
+This project provides a starter template for Angular applications using:
+
+- **Angular 19.2** - Latest Angular framework with all modern features
+- **Rspack 1.3.5** - Fast Rust-based bundler (webpack-compatible)
+- **Bun 1.3** - Fast JavaScript runtime and package manager
+- **Biome** - Fast linter and formatter written in Rust
+
+The setup maintains compatibility with traditional Angular CLI builds while offering faster build times through Rspack and Bun.
+
+## Prerequisites
+
+- Node.js v18+ (or use Bun as runtime)
+- Bun v1.3+ (recommended for package management and running scripts)
+- npm or yarn (alternative package managers)
+
+Install Bun if not already installed:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+## Project Structure
+
+```
+├── src/
+│   ├── app/              # Angular application components
+│   ├── assets/           # Static assets
+│   ├── favicon.ico
+│   ├── index.html        # Main HTML template
+│   ├── main.ts           # Application entry point
+│   └── styles.css        # Global styles
+├── angular.json          # Angular CLI configuration
+├── rspack.config.js      # Rspack bundler configuration
+├── bunfig.toml           # Bun runtime configuration
+├── tsconfig.json         # TypeScript configuration
+├── tsconfig.app.json     # TypeScript config for app
+├── tsconfig.spec.json    # TypeScript config for tests
+├── karma.conf.js         # Karma test runner configuration
+├── biome.json            # Biome linter/formatter configuration
+├── custom-webpack.config.js  # Custom webpack configuration
+└── package.json          # Project dependencies and scripts
+```
 
 ## Getting Started
 
-To install this example application, run the following commands:
+### Installation
+
+Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/oktadeveloper/okta-angular-webpack-example.git
-cd okta-angular-webpack-example
+git clone <repository-url>
+cd starter-angular-rspack
+bun install
 ```
 
-This will get a copy of the project installed locally. To install all of its dependencies and start each app, follow the instructions below.
+### Development Server
 
-Run the app using:
+Start the development server with Rspack:
 
 ```bash
-npm install
-npm start
+bun run dev
+# or
+bun run serve:rspack
 ```
 
-### Create a New OIDC App in Okta
+The application will be available at `http://localhost:4200`.
 
-Before you begin, you’ll need a free Okta developer account. Install the [Okta CLI](https://cli.okta.com) and run `okta register` to sign up for a new account. If you already have an account, run `okta login`.
+### Production Build
 
-Then, run `okta apps create`. Select the default app name, or change it as you see fit. Choose **Single-Page App** and press **Enter**.
+Create a production build with Rspack:
 
-Change the Redirect URI to `http://localhost:4200/callback` and accept the default Logout Redirect URI of `http://localhost:4200`.
-
-The Okta CLI will create an OIDC Single-Page App in your Okta Org. It will add the redirect URIs you specified and grant access to the Everyone group. It will also add a trusted origin for `http://localhost:4200`. You will see output like the following when it’s finished:
-
-```
-Okta application configuration:
-Issuer:    https://dev-133337.okta.com/oauth2/default
-Client ID: 0oab8eb55Kb9jdMIr5d6
+```bash
+bun run build:rspack
 ```
 
-NOTE: You can also use the Okta Admin Console to create your app. See [Create an Angular App](https://developer.okta.com/docs/guides/sign-into-spa/angular/create-okta-application/) for more information.
+Output will be in the `dist/` directory.
 
-Copy your `issuer` and `clientId` in to `src/app/app.module.ts`.
+## Available Scripts
 
-**NOTE:** The value of `{yourOktaDomain}` should be something like `dev-123456.okta.com`. Make sure you don't include `-admin` in the value!
+| Command | Description |
+|---------|-------------|
+| `bun run start` | Start Angular CLI dev server (webpack) |
+| `bun run dev` | Start Rspack dev server with HMR |
+| `bun run serve:rspack` | Start Rspack dev server |
+| `bun run build` | Production build with Angular CLI |
+| `bun run build:rspack` | Production build with Rspack |
+| `bun run test` | Run unit tests with Karma |
+| `bun run lint` | Check code with Biome |
+| `bun run lint:fix` | Auto-fix linting issues with Biome |
+| `bun run format` | Check formatting with Biome |
+| `bun run format:fix` | Auto-fix formatting with Biome |
+| `bun run e2e` | Run end-to-end tests |
 
-```ts
-const oktaConfig = {
-  issuer: 'https://{yourOktaDomain}/oauth2/default',
-  clientId: '{clientId}',
-  redirectUri: window.location.origin + '/callback'
-};
+## Configuration
+
+### Rspack Configuration
+
+The `rspack.config.js` file configures the Rspack bundler:
+
+- Uses `esbuild-loader` for fast TypeScript compilation
+- Configures `raw-loader` for HTML templates
+- Processes CSS/SCSS with standard loaders
+- Generates HTML with `html-rspack-plugin`
+- Supports hot module replacement (HMR)
+
+### Bun Configuration
+
+The `bunfig.toml` file configures the Bun runtime:
+
+- Defines script aliases
+- Configures runtime behavior
+
+### TypeScript Configuration
+
+- `tsconfig.json` - Base TypeScript configuration for Angular 19
+- `tsconfig.app.json` - Application-specific TypeScript settings
+- `tsconfig.spec.json` - Test-specific TypeScript settings
+
+### Angular CLI Configuration
+
+The `angular.json` file maintains compatibility with traditional Angular CLI commands and webpack-based builds.
+
+## Build System Comparison
+
+### Rspack + Bun (Recommended for Development)
+
+- Faster cold starts
+- Faster incremental builds
+- Lower memory usage
+- Hot module replacement enabled
+
+### Angular CLI + Webpack (Traditional)
+
+- Full Angular CLI feature set
+- More plugins and loaders available
+- Better for complex custom configurations
+
+## Key Dependencies
+
+### Runtime Dependencies
+
+- `@angular/*` (19.2.0) - Angular framework packages
+- `rxjs` (7.8.x) - Reactive Extensions for JavaScript
+- `zone.js` (0.15.x) - Zone.js for change detection
+- `tslib` (2.6.x) - TypeScript runtime library
+- `winbox` (0.2.x) - Window management library
+
+### Development Dependencies
+
+- `@rspack/core` (1.3.5) - Rspack bundler
+- `@rspack/cli` (1.3.5) - Rspack CLI tools
+- `@biomejs/biome` (2.4.2) - Linter and formatter
+- `esbuild-loader` (4.4.2) - Fast TypeScript compilation
+- `sass` (1.97.x) - SCSS/SASS preprocessor
+- `karma` (6.4.x) - Test runner
+- `jasmine` (5.1.x) - Testing framework
+
+## Code Quality
+
+### Linting
+
+This project uses Biome for linting and formatting, which is significantly faster than ESLint and Prettier.
+
+Check for linting issues:
+
+```bash
+bun run lint
 ```
 
-## Links
+Auto-fix issues:
 
-This example uses the following open source libraries from Okta:
+```bash
+bun run lint:fix
+```
 
-* [Okta Angular SDK](https://github.com/okta/okta-oidc-js/tree/master/packages/okta-angular)
+### Formatting
 
-## Help
+Check formatting:
 
-Please post any questions as comments on the [blog post](https://developer.okta.com/blog/2019/12/09/angular-webpack), or visit our [Okta Developer Forums](https://devforum.okta.com/).
+```bash
+bun run format
+```
+
+Auto-fix formatting:
+
+```bash
+bun run format:fix
+```
+
+Biome configuration is in `biome.json`.
+
+## Troubleshooting
+
+### Clean Installation
+
+If you encounter dependency issues:
+
+```bash
+rm -rf node_modules bun.lock
+bun install
+```
+
+### Clear Build Cache
+
+If builds are failing:
+
+```bash
+rm -rf dist
+bun run build:rspack
+```
+
+### Check Versions
+
+Verify tool versions:
+
+```bash
+bun --version    # Should be 1.3+
+node --version   # Should be v18+
+```
+
+### Rspack-Specific Issues
+
+If Rspack build fails but webpack succeeds:
+
+1. Check `rspack.config.js` for loader compatibility
+2. Ensure all required loaders are installed
+3. Compare with `angular.json` webpack configuration
+
+### Performance Issues
+
+For large bundle sizes:
+
+1. Enable production mode in Angular
+2. Implement lazy loading for routes
+3. Analyze bundle with `bun run build:rspack --analyze`
 
 ## License
 
-Apache 2.0, see [LICENSE](LICENSE).
+This project is provided as-is for educational and starter purposes.

@@ -1,32 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { OktaAuthService } from '@okta/okta-angular';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
-  title = 'angular-webpack-demo';
-  isAuthenticated: boolean;
-
-  constructor(public oktaAuth: OktaAuthService) {
-    // subscribe to authentication state changes
-    this.oktaAuth.$authenticationState.subscribe(
-      (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
-    );
-  }
-
-  ngOnInit() {
-    // get authentication state for immediate use
-    this.oktaAuth.isAuthenticated().then((auth) => {this.isAuthenticated = auth});
-  }
-
-  login() {
-    this.oktaAuth.signInWithRedirect();
-  }
-
-  logout() {
-    this.oktaAuth.signOut();
-  }
+export class AppComponent {
+  title = 'angular-rspack-demo';
 }
