@@ -1,10 +1,10 @@
 import {
   Directive,
-  type ElementRef,
+  ElementRef,
   HostListener,
   Input,
-  type OnInit,
-  type Renderer2,
+  OnInit,
+  Renderer2,
 } from '@angular/core';
 
 /**

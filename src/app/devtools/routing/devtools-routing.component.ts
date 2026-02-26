@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import type { DevtoolsService } from '../devtools.service';
+import { DevtoolsService } from '../devtools.service';
 
 interface RouteInfo {
   path: string;

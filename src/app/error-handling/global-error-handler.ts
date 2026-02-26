@@ -1,5 +1,5 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { ErrorStateService, type ErrorInfo } from './error-state.service';
+import { type ErrorHandler, Injectable, Injector, inject } from '@angular/core';
+import { type ErrorInfo, ErrorStateService } from './error-state.service';
 
 /**
  * Custom Error Handler - Catches unhandled Angular errors
@@ -8,7 +8,7 @@ import { ErrorStateService, type ErrorInfo } from './error-state.service';
 export class GlobalErrorHandler implements ErrorHandler {
   private errorService?: ErrorStateService;
 
-  constructor(private injector: Injector) {}
+  private injector = inject(Injector);
 
   handleError(error: any): void {
     // Lazy load error service to avoid circular dependency
@@ -43,7 +43,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       const id = errorInfo.id;
       if (id) {
         const storedError = this.errorService.getError(id);
-        this.errorService.reportError(storedError || errorInfo);
+        this.errorService.reportError((storedError as any) || errorInfo);
       }
     }
 

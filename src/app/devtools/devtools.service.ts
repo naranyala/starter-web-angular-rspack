@@ -1,10 +1,10 @@
-import { type ApplicationRef, Injectable, signal } from '@angular/core';
+import { ApplicationRef, Injectable, signal } from '@angular/core';
 import {
   NavigationCancel,
   NavigationEnd,
   NavigationError,
   NavigationStart,
-  type Router,
+  Router,
 } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
@@ -275,7 +275,7 @@ export class DevtoolsService {
             path: route.routeConfig.path,
             component: route.routeConfig.component?.name,
             loadChildren: route.routeConfig.loadChildren?.toString().slice(0, 100),
-            canActivate: route.routeConfig.canActivate?.map((c) => String(c)).join(', ') || '',
+            canActivate: route.routeConfig.canActivate?.map((c) => String(c)) || [],
           }
         : null,
       params: route.params,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ErrorStateService } from './error-state.service';
 
 @Component({
@@ -212,9 +212,21 @@ import { ErrorStateService } from './error-state.service';
 export class ErrorModalComponent {
   private errorStateService = inject(ErrorStateService, { optional: true });
 
-  isModalOpen = this.errorStateService?.isModalOpen$ ?? signal(false);
-  currentError = this.errorStateService?.currentError$ ?? signal<any>(null);
+  isModalOpen = signal(false);
+  currentError = signal<any>(null);
   isCriticalError = computed(() => this.currentError()?.severity === 'critical');
+
+  constructor() {
+    if (this.errorStateService) {
+      // Sync with error state service
+      effect(() => {
+        this.isModalOpen.set(this.errorStateService!.isModalOpen$());
+      });
+      effect(() => {
+        this.currentError.set(this.errorStateService!.currentError$());
+      });
+    }
+  }
 
   getErrorIcon(): string {
     const severity = this.currentError()?.severity;

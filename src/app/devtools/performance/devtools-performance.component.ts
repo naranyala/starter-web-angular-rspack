@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, type OnDestroy, type OnInit } from '@angular/core';
-import type { DevtoolsService } from '../devtools.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { DevtoolsService } from '../devtools.service';
 
 interface PerformanceMetrics {
   changeDetectionCount: number;

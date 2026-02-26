@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, inject, NgZone } from '@angular/core';
 import { ErrorStateService } from './error-state.service';
 
 /**
@@ -10,14 +10,9 @@ import { ErrorStateService } from './error-state.service';
 export class WindowErrorHandler {
   private initialized = false;
 
-  constructor(
-    private errorStateService: ErrorStateService,
-    private ngZone: NgZone
-  ) {}
+  private errorStateService = inject(ErrorStateService);
+  private ngZone = inject(NgZone);
 
-  /**
-   * Initialize global error listeners
-   */
   init(): void {
     if (this.initialized) return;
 

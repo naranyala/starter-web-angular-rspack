@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, type OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import './app.component.css';
+// import { DevtoolsPanelComponent } from './devtools/devtools-panel.component';
 import { ErrorModalComponent } from './error-handling/error-modal.component';
 import { WindowErrorHandler } from './error-handling/window-error-handler';
 
@@ -10,9 +12,9 @@ import { WindowErrorHandler } from './error-handling/window-error-handler';
   imports: [CommonModule, RouterOutlet, ErrorModalComponent],
   template: `
     <router-outlet></router-outlet>
+    <!-- <app-devtools></app-devtools> -->
     <app-error-modal></app-error-modal>
   `,
-  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   title = 'angular-rspack-demo';

@@ -27,10 +27,10 @@ import { FormsModule } from '@angular/forms';
               min="200"
               max="600"
               step="50"
-              [ngModel]="panelHeight()"
+              [ngModel]="panelHeightSig()"
               (ngModelChange)="onHeightChange($event)"
             />
-            <span class="height-value">{{ panelHeight() }}px</span>
+            <span class="height-value">{{ panelHeightSig() }}px</span>
           </div>
         </div>
 

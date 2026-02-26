@@ -79,17 +79,19 @@ async function getPort(defaultPort = 4200) {
  * This configuration uses esbuild to compile TypeScript and relies on
  * Angular's JIT compiler in the browser.
  */
-module.exports = async () => {
+module.exports = async (env, argv) => {
+  const isDev = argv.mode === 'development' || process.env.NODE_ENV === 'development';
   const port = await getPort(4200);
-  console.log(`Using port ${port}`);
+  console.log(`Using port ${port}, mode: ${isDev ? 'development' : 'production'}`);
 
   return {
+    mode: isDev ? 'development' : 'production',
     entry: {
       main: './src/main.ts',
     },
     output: {
       path: path.resolve(__dirname, 'dist/angular-rspack-demo'),
-      filename: '[name].[contenthash].js',
+      filename: isDev ? '[name].js' : '[name].[contenthash].js',
       clean: true,
     },
     resolve: {
@@ -118,7 +120,10 @@ module.exports = async () => {
                   useDefineForClassFields: false,
                   esModuleInterop: true,
                   skipLibCheck: true,
-                },
+    },
+    watchOptions: {
+      ignored: /node_modules/,
+    },
               },
             },
           },
@@ -152,11 +157,11 @@ module.exports = async () => {
       }),
       // Define Angular production mode flag
       new DefinePlugin({
-        'ngDevMode': 'false',
+        'ngDevMode': isDev,
       }),
     ],
     optimization: {
-      minimize: true,
+      minimize: !isDev,
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
@@ -172,12 +177,19 @@ module.exports = async () => {
       port,
       historyApiFallback: true,
       hot: true,
-      static: {
-        directory: path.resolve(__dirname, 'src'),
-        publicPath: '/',
-      },
+      static: [
+        {
+          directory: path.resolve(__dirname, 'dist/angular-rspack-demo'),
+          publicPath: '/',
+        },
+        {
+          directory: path.resolve(__dirname, 'node_modules/winbox/dist'),
+          publicPath: '/node_modules/winbox/dist',
+        },
+      ],
       devMiddleware: {
         publicPath: '/',
+        writeToDisk: false,
       },
     },
     // Externals for scripts loaded via angular.json (like winbox)
