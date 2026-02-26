@@ -37,3 +37,7 @@ interface Window {
     };
   };
 }
+
+declare module 'winbox/dist/winbox.bundle.min.js' {
+  export = Window.WinBox;
+}

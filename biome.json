@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,21 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**/*.ts", "**/*.html", "**/*.css", "**/*.scss", "**/*.json"]
+    "includes": [
+      "**/*.ts",
+      "**/*.html",
+      "**/*.css",
+      "**/*.scss",
+      "**/*.json",
+      "!!**/dist",
+      "!!**/node_modules",
+      "!!**/.angular",
+      "!!**/coverage",
+      "!!**/*.min.js",
+      "!!**/*.generated.*",
+      "!!**/src/environments/*"
+    ],
+    "maxSize": 1000000
   },
   "formatter": {
     "enabled": true,
@@ -20,19 +34,43 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "noUndeclaredVariables": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn"
+      },
       "style": {
-        "noNonNullAssertion": "warn"
+        "noNonNullAssertion": "warn",
+        "noDefaultExport": "off",
+        "useConst": "warn",
+        "useImportType": "warn"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "warn",
+        "noAssignInExpressions": "warn"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "useArrowFunction": "warn"
+      },
+      "performance": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true
       }
     }
   },
   "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
     "formatter": {
       "quoteStyle": "single",
       "trailingCommas": "es5",
-      "semicolons": "always"
+      "semicolons": "always",
+      "arrowParentheses": "always"
     }
   },
   "json": {
@@ -50,10 +88,49 @@
   },
   "html": {
     "formatter": {
+      "enabled": true,
       "indentWidth": 2
     },
     "parser": {
       "interpolation": true
+    },
+    "linter": {
+      "enabled": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/app/**/*.component.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/app/**/*.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUndeclaredVariables": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.spec.ts", "**/*.test.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ]
 }

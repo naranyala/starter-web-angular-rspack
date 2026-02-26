@@ -7,3 +7,8 @@ prefer-offline = true
 [run]
 # Use Bun's JavaScript runtime
 shell = "bun"
+
+[test]
+# Test configuration
+preload = ["./src/test-setup.ts"]
+root = "./src"

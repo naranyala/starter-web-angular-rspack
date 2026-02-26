@@ -1,3 +1,34 @@
-e2e/**
-src/test.ts
-**/*.spec.ts
+# Auto-generated Angular files
+.angular/**
+dist/**
+coverage/**
+
+# Dependencies
+node_modules/**
+
+# Build outputs
+**/dist/**
+**/build/**
+
+# Vendor and build tools
+node_modules/.cache/**
+**/*.config.js
+**/*.config.ts
+!rspack.config.js
+!playwright.config.ts
+
+# Legacy and migration folders
+legacy/**
+
+# Generated files
+**/*.min.js
+**/*.generated.*
+**/*.bundle.js
+
+# Test files (optional - uncomment if you want to ignore tests)
+# e2e/**
+# src/test.ts
+# **/*.spec.ts
+
+# Environment files
+src/environments/*
