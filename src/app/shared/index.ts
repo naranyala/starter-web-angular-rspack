@@ -1,4 +1,2 @@
-// Shared directives and pipes barrel export
-export * from './directives';
-export * from './notification.service';
-export * from './pipes';
+export * from './winbox-window.service';
+export * from './winbox-panel.component';

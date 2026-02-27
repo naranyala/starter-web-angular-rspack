@@ -186,10 +186,17 @@ module.exports = async (env, argv) => {
           directory: path.resolve(__dirname, 'node_modules/winbox/dist'),
           publicPath: '/node_modules/winbox/dist',
         },
+        {
+          directory: path.resolve(__dirname, 'public'),
+          publicPath: '/',
+        },
       ],
       devMiddleware: {
         publicPath: '/',
         writeToDisk: false,
+      },
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
       },
     },
     // Externals for scripts loaded via angular.json (like winbox)

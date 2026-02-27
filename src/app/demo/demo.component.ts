@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { WinBoxWindowService } from '../shared/winbox-window.service';
+import './demo.component.css';
 
 interface CardItem {
   title: string;
@@ -24,7 +26,7 @@ interface CardItem {
         <input
           type="text"
           class="search-input"
-          placeholder="Search..."
+          placeholder="Search technologies..."
           [(ngModel)]="searchQuery"
         />
         <span class="search-icon">🔍</span>
@@ -33,16 +35,16 @@ interface CardItem {
         }
       </div>
 
-      <div class="cards-grid">
+      <div class="cards-list">
         @for (card of filteredCards; track card.title) {
           <div class="card" (click)="openCard(card)">
-            <div class="card-header">
-              <div class="card-icon" [style.background]="card.color">
-                {{ card.icon }}
-              </div>
-              <h3 class="card-title">{{ card.title }}</h3>
+            <div class="card-icon" [style.background]="card.color">
+              {{ card.icon }}
             </div>
-            <p class="card-description">{{ card.description }}</p>
+            <div class="card-content">
+              <h3 class="card-title">{{ card.title }}</h3>
+              <p class="card-description">{{ card.description }}</p>
+            </div>
           </div>
         } @empty {
           <div class="no-results">
@@ -51,171 +53,6 @@ interface CardItem {
         }
       </div>
     </div>
-  `,
-  styles: `
-    .demo-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    .demo-container h1 {
-      font-size: 2rem;
-      color: #1a1a2e;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 32px;
-    }
-
-    .search-container {
-      position: relative;
-      max-width: 500px;
-      margin: 0 auto 40px;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 14px 45px 14px 20px;
-      font-size: 1rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      box-sizing: border-box;
-    }
-
-    .search-input:focus {
-      border-color: #0f3460;
-      box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1);
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.2rem;
-      opacity: 0.5;
-    }
-
-    .clear-btn {
-      position: absolute;
-      right: 45px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #e0e0e0;
-      border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1rem;
-      line-height: 1;
-      color: #666;
-      transition: background 0.2s;
-    }
-
-    .clear-btn:hover {
-      background: #ccc;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s, box-shadow 0.2s, cursor 0.2s;
-      animation: fadeIn 0.3s ease-out;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    .card:active {
-      transform: translateY(-2px);
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      color: #1a1a2e;
-      margin: 0 0 12px;
-    }
-
-    .card-description {
-      color: #666;
-      line-height: 1.6;
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      color: #999;
-    }
-
-    .click-hint {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 12px;
-      background: #f0f4ff;
-      color: #0f3460;
-      font-size: 0.85rem;
-      border-radius: 20px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-    }
-
-    .card:hover .click-hint {
-      opacity: 1;
-    }
-
-    @media (max-width: 600px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .demo-container h1 {
-        font-size: 1.5rem;
-      }
-    }
   `,
 })
 export class DemoComponent {
@@ -352,48 +189,34 @@ export class DemoComponent {
     );
   }
 
-  async openCard(card: CardItem): Promise<void> {
-    // Dynamically load winbox if not already loaded
-    if (!(window as unknown as { WinBox?: any }).WinBox) {
-      try {
-        await import('winbox/dist/winbox.bundle.min.js');
-      } catch (e) {
-        console.error('Failed to load WinBox:', e);
-        return;
-      }
-    }
+  private windowService = inject(WinBoxWindowService);
 
-    const WinBoxConstructor = (window as unknown as { WinBox: any }).WinBox;
-    if (!WinBoxConstructor) {
-      console.error('WinBox is not loaded. Please check if winbox is imported.');
-      return;
-    }
-    const _win = new WinBoxConstructor({
+  async openCard(card: CardItem): Promise<void> {
+    const htmlContent = `
+      <div style="padding: 20px; color: #333; height: 100%; overflow: auto; background: white;">
+        ${card.content}
+        ${
+          card.link
+            ? `
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+            <a href="${card.link}" target="_blank" style="color: ${card.color}; text-decoration: none; font-weight: 500;">
+              Visit ${card.title} Website →
+            </a>
+          </div>
+        `
+            : ''
+        }
+      </div>
+    `;
+
+    this.windowService.createWindow({
       title: card.title,
       background: card.color,
       width: '600px',
       height: '500px',
       x: 'center',
       y: 'center',
-      html: `
-        <div style="padding: 20px; color: #333; height: 100%; overflow: auto; background: white;">
-          ${card.content}
-          ${
-            card.link
-              ? `
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
-              <a href="${card.link}" target="_blank" style="color: ${card.color}; text-decoration: none; font-weight: 500;">
-                Visit ${card.title} Website →
-              </a>
-            </div>
-          `
-              : ''
-          }
-        </div>
-      `,
-      onfocus: function () {
-        this.setBackground(card.color);
-      },
+      html: htmlContent,
     });
   }
 }
