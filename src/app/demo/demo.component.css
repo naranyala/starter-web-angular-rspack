@@ -1,112 +1,253 @@
+/* ============================================
+   Demo Component - Glassmorphism Cards
+   Premium Dark Theme with Frosted Glass Effect
+   ============================================ */
+
 .demo-container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 60px 16px 24px;
+  padding: 60px 24px 40px;
+  min-height: calc(100vh - var(--panel-height));
 }
 
 .demo-container h1 {
-  font-size: 1.5rem;
-  color: #1a1a2e;
-  margin: 0 0 6px 0;
+  font-size: 2.5rem;
+  color: var(--color-text);
+  margin: 0 0 16px 0;
   text-align: center;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(
+    135deg,
+    #f4f4f5 0%,
+    #a1a1aa 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
 }
 
 .subtitle {
   text-align: center;
-  color: #666;
-  margin: 0 0 16px 0;
-  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 40px 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
+/* Search Container - Glassmorphism */
 .search-container {
   position: relative;
-  margin: 0 0 16px 0;
+  margin: 0 0 28px 0;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 45px 8px 12px;
-  font-size: 0.85rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  padding: 14px 48px 14px 20px;
+  font-size: 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
   outline: none;
-  transition: border-color 0.2s;
+  transition: all var(--transition-fast);
+  
+  /* Glassmorphism background */
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.6) 0%,
+    rgba(22, 22, 31, 0.5) 100%
+  );
+  
   box-sizing: border-box;
-  background: white;
+  color: var(--color-text);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.search-input:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.8) 0%,
+    rgba(22, 22, 31, 0.7) 100%
+  );
 }
 
 .search-input:focus {
-  border-color: #3498db;
+  border-color: var(--color-primary);
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.9) 0%,
+    rgba(22, 22, 31, 0.8) 100%
+  );
+  box-shadow: 
+    0 0 0 3px rgba(124, 131, 253, 0.15),
+    0 4px 16px rgba(124, 131, 253, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Search Icon */
 .search-icon {
   position: absolute;
-  right: 15px;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.2rem;
-  opacity: 0.5;
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
 }
 
+.search-container:focus-within .search-icon {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 6px var(--color-primary-glow));
+}
+
+/* Clear Button */
 .clear-btn {
   position: absolute;
-  right: 45px;
+  right: 44px;
   top: 50%;
   transform: translateY(-50%);
-  background: #e0e0e0;
-  border: none;
+  
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  
+  border: 1px solid rgba(255, 255, 255, 0.08);
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.85rem;
   line-height: 1;
-  color: #666;
-  transition: background 0.2s;
-}
-
-.clear-btn:hover {
-  background: #ccc;
-}
-
-.cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 10px 14px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  cursor: pointer;
-}
-
-.card:hover {
-  transform: translateX(3px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border-color: #3498db;
-}
-
-.card:active {
-  transform: translateX(2px);
-}
-
-.card-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+}
+
+.clear-btn:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Cards List */
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Individual Card - Glassmorphism Style */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  /* Glassmorphism background */
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.5) 0%,
+    rgba(22, 22, 31, 0.4) 100%
+  );
+  
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card hover gradient overlay */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 131, 253, 0.05) 0%,
+    transparent 50%,
+    rgba(34, 211, 238, 0.05) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateX(6px);
+  border-color: rgba(124, 131, 253, 0.3);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(124, 131, 253, 0.2),
+    0 0 20px rgba(124, 131, 253, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.card:active {
+  transform: translateX(3px);
+}
+
+/* Card Icon - Enhanced */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
   flex-shrink: 0;
+  
+  /* Glassmorphism icon background */
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  transition: all var(--transition-fast);
+}
+
+.card:hover .card-icon {
+  transform: scale(1.05);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.3),
+    0 0 15px currentColor,
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .card-content {
@@ -115,61 +256,238 @@
 }
 
 .card-title {
-  font-size: 0.9rem;
-  color: #1a1a2e;
-  margin: 0 0 2px 0;
-  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0 0 6px 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .card-description {
-  color: #666;
-  line-height: 1.3;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 400;
 }
 
 .no-results {
   text-align: center;
-  padding: 24px 16px;
-  color: #999;
-  font-size: 0.85rem;
+  padding: 60px 16px;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.3) 0%,
+    rgba(22, 22, 31, 0.2) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* ============================================
+   Card Content (Expanded View in WinBox)
+   ============================================ */
+
+.card-content {
+  padding: 24px;
+}
+
+.card-content h3 {
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card-content h4 {
+  color: var(--color-accent);
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-content p {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+.card-content ul {
+  color: var(--color-text-secondary);
+  padding-left: 28px;
+  margin-bottom: 24px;
+}
+
+.card-content li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+/* Code Blocks - Premium Style */
+.card-content pre {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 24px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  
+  /* Glassmorphism code block */
+  background: linear-gradient(
+    145deg,
+    rgba(10, 10, 15, 0.9) 0%,
+    rgba(18, 18, 26, 0.8) 100%
+  );
+  
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.card-content pre::before {
+  content: attr(data-language) " · Click to copy";
+  display: block;
+  padding: 10px 16px;
+  
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.8) 0%,
+    rgba(22, 22, 31, 0.7) 100%
+  );
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color var(--transition-fast);
+}
+
+.card-content pre:hover::before {
+  color: var(--color-primary);
+}
+
+.card-content pre.copied::before {
+  content: attr(data-language) " · ✓ Copied!";
+  color: var(--color-success);
+}
+
+.card-content pre code {
+  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  display: block;
+  padding: 20px;
+  background: transparent !important;
+  color: var(--color-text-secondary);
+}
+
+/* Prism.js overrides */
+.card-content pre[class*="language-"] {
+  background: linear-gradient(
+    145deg,
+    rgba(10, 10, 15, 0.95) 0%,
+    rgba(18, 18, 26, 0.9) 100%
+  ) !important;
+  text-shadow: none !important;
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
+}
+
+.card-content pre[class*="language-"] code {
+  color: inherit;
+  background: transparent !important;
+  padding: 20px;
+}
+
+/* Custom scrollbar for code blocks */
+.card-content pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.card-content pre::-webkit-scrollbar-track {
+  background: rgba(10, 10, 15, 0.5);
+}
+
+.card-content pre::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    90deg,
+    rgba(124, 131, 253, 0.3) 0%,
+    rgba(124, 131, 253, 0.6) 100%
+  );
+  border-radius: var(--radius-full);
+}
+
+.card-content pre::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(124, 131, 253, 0.5) 0%,
+    rgba(124, 131, 253, 0.8) 100%
+  );
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
 
 @media (max-width: 600px) {
   .demo-container {
-    padding: 16px 16px 24px;
+    padding: 40px 16px 24px;
   }
 
   .demo-container h1 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .subtitle {
     font-size: 0.9rem;
   }
 
-  .search-container {
-    top: 80px;
+  .search-input {
+    padding: 12px 44px 12px 16px;
+    font-size: 0.9rem;
   }
 
   .card {
     padding: 14px 16px;
+    gap: 12px;
   }
 
   .card-icon {
     width: 42px;
     height: 42px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .card-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .card-description {
+    font-size: 0.8rem;
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .card-content pre code {
+    padding: 16px;
     font-size: 0.8rem;
   }
 }

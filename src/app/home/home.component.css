@@ -1,78 +1,186 @@
+/* ============================================
+   Home Component - Glassmorphism Cards
+   Premium Dark Theme with Frosted Glass Effect
+   ============================================ */
+
 .home-container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 60px 16px 24px;
+  padding: 60px 24px 40px;
+  min-height: calc(100vh - var(--panel-height));
 }
 
 .home-container h1 {
-  font-size: 1.5rem;
-  color: #1a1a2e;
-  margin: 0 0 6px 0;
+  font-size: 2.5rem;
+  color: var(--color-text);
+  margin: 0 0 16px 0;
   text-align: center;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(
+    135deg,
+    #f4f4f5 0%,
+    #a1a1aa 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
 }
 
 .subtitle {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0 0 16px 0;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 40px 0;
   text-align: center;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
+/* Search Box - Glassmorphism */
 .search-box {
-  margin-bottom: 16px;
+  margin-bottom: 28px;
   padding: 8px 0;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
   outline: none;
-  transition: border-color 0.2s;
-  background: white;
+  transition: all var(--transition-fast);
+  
+  /* Glassmorphism background */
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.6) 0%,
+    rgba(22, 22, 31, 0.5) 100%
+  );
+  
+  color: var(--color-text);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.search-input:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.8) 0%,
+    rgba(22, 22, 31, 0.7) 100%
+  );
 }
 
 .search-input:focus {
-  border-color: #3498db;
+  border-color: var(--color-primary);
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.9) 0%,
+    rgba(22, 22, 31, 0.8) 100%
+  );
+  box-shadow: 
+    0 0 0 3px rgba(124, 131, 253, 0.15),
+    0 4px 16px rgba(124, 131, 253, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Cards List */
 .cards-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 }
 
+/* Individual Card - Glassmorphism Style */
 .card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 10px 14px;
+  gap: 16px;
+  
+  /* Glassmorphism background */
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.5) 0%,
+    rgba(22, 22, 31, 0.4) 100%
+  );
+  
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
   text-align: left;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: all var(--transition-base);
   cursor: pointer;
+  
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card subtle gradient overlay */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 131, 253, 0.03) 0%,
+    transparent 50%,
+    rgba(34, 211, 238, 0.03) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:hover {
-  transform: translateX(3px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border-color: #3498db;
+  transform: translateX(6px);
+  border-color: rgba(124, 131, 253, 0.3);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(124, 131, 253, 0.2),
+    0 0 20px rgba(124, 131, 253, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.card:active {
+  transform: translateX(3px);
+}
+
+/* Card Category Badge */
 .card-category {
-  font-size: 0.6rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   text-transform: uppercase;
   color: #fff;
-  background: #3498db;
-  padding: 3px 6px;
-  border-radius: 4px;
+  background: linear-gradient(
+    135deg,
+    #7c83fd 0%,
+    #5b5ff7 100%
+  );
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
   white-space: nowrap;
   flex-shrink: 0;
+  letter-spacing: 0.8px;
+  box-shadow: 
+    0 2px 8px rgba(124, 131, 253, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .card-content {
@@ -81,123 +189,152 @@
 }
 
 .card-title {
-  font-size: 0.9rem;
-  color: #1a1a2e;
-  margin: 0 0 2px 0;
-  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0 0 6px 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .card-description {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 400;
 }
 
 .no-results {
   text-align: center;
-  color: #999;
-  padding: 24px 16px;
-  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  padding: 60px 16px;
+  font-size: 1rem;
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.3) 0%,
+    rgba(22, 22, 31, 0.2) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Code block styling for card content */
+/* ============================================
+   Card Content (Expanded View in WinBox)
+   ============================================ */
+
 .card-content {
   padding: 24px;
 }
 
 .card-content h3 {
-  color: #1a1a2e;
+  color: var(--color-text);
   margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 1.5rem;
-  font-weight: 700;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .card-content h4 {
-  color: #3498db;
-  margin-top: 24px;
-  margin-bottom: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: var(--color-accent);
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 .card-content p {
-  color: #666;
-  line-height: 1.7;
-  margin-bottom: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 24px;
   font-size: 0.95rem;
 }
 
 .card-content ul {
-  color: #666;
-  padding-left: 24px;
-  margin-bottom: 16px;
+  color: var(--color-text-secondary);
+  padding-left: 28px;
+  margin-bottom: 24px;
 }
 
 .card-content li {
-  margin-bottom: 8px;
-  line-height: 1.6;
+  margin-bottom: 10px;
+  line-height: 1.7;
 }
 
+/* Code Blocks - Premium Style */
 .card-content pre {
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  margin: 16px 0;
-  border: 1px solid #2d2d44;
+  margin: 24px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
-  background: #1a1a2e;
+  
+  /* Glassmorphism code block */
+  background: linear-gradient(
+    145deg,
+    rgba(10, 10, 15, 0.9) 0%,
+    rgba(18, 18, 26, 0.8) 100%
+  );
+  
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.card-content pre::before {
+  content: attr(data-language) " · Click to copy";
+  display: block;
+  padding: 10px 16px;
+  
+  background: linear-gradient(
+    145deg,
+    rgba(31, 31, 46, 0.8) 0%,
+    rgba(22, 22, 31, 0.7) 100%
+  );
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color var(--transition-fast);
+}
+
+.card-content pre:hover::before {
+  color: var(--color-primary);
+}
+
+.card-content pre.copied::before {
+  content: attr(data-language) " · ✓ Copied!";
+  color: var(--color-success);
 }
 
 .card-content pre code {
-  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
   font-size: 0.85rem;
-  line-height: 1.6;
+  line-height: 1.7;
   display: block;
   padding: 20px;
   background: transparent !important;
-  color: #f8f8f2;
+  color: var(--color-text-secondary);
 }
 
-/* Code block header with title and copy button */
-.card-content pre::before {
-  content: attr(data-language) ' \00A0 \00B7 \00A0 Click to copy';
-  display: block;
-  padding: 6px 16px;
-  background: #0f0f1a;
-  border-bottom: 1px solid #2d2d44;
-  color: #666;
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: color 0.2s ease;
-}
-
-/* Hover effect */
-.card-content pre:hover::before {
-  color: #3498db;
-  background: #12121f;
-}
-
-/* Copied state header */
-.card-content pre.copied::before {
-  content: attr(data-language) ' \00A0 \00B7 \00A0 ✓ Copied to clipboard!';
-  color: #27ae60;
-  background: rgba(39, 174, 96, 0.1);
-}
-
-/* Prism.js dark theme overrides */
+/* Prism.js overrides */
 .card-content pre[class*="language-"] {
-  background: #1a1a2e !important;
+  background: linear-gradient(
+    145deg,
+    rgba(10, 10, 15, 0.95) 0%,
+    rgba(18, 18, 26, 0.9) 100%
+  ) !important;
   text-shadow: none !important;
-  border-radius: 10px;
-  margin: 16px 0;
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
 }
 
 .card-content pre[class*="language-"] code {
@@ -208,55 +345,81 @@
 
 /* Custom scrollbar for code blocks */
 .card-content pre::-webkit-scrollbar {
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
 }
 
 .card-content pre::-webkit-scrollbar-track {
-  background: #1a1a2e;
-  border-radius: 0 0 10px 0;
+  background: rgba(10, 10, 15, 0.5);
 }
 
 .card-content pre::-webkit-scrollbar-thumb {
-  background: #3d3d5c;
-  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 131, 253, 0.3) 0%,
+    rgba(124, 131, 253, 0.6) 100%
+  );
+  border-radius: var(--radius-full);
 }
 
 .card-content pre::-webkit-scrollbar-thumb:hover {
-  background: #4d4d6c;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 131, 253, 0.5) 0%,
+    rgba(124, 131, 253, 0.8) 100%
+  );
 }
+
+/* ============================================
+   Responsive
+   ============================================ */
 
 @media (max-width: 600px) {
   .home-container {
-    padding: 16px 16px 24px;
+    padding: 40px 16px 24px;
   }
 
   .home-container h1 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .subtitle {
     font-size: 0.9rem;
   }
 
-  .search-box {
-    top: 80px;
+  .search-input {
+    padding: 12px 16px;
+    font-size: 0.9rem;
   }
 
   .card {
     padding: 14px 16px;
+    gap: 12px;
   }
 
   .card-category {
-    font-size: 0.65rem;
-    padding: 3px 6px;
+    font-size: 0.6rem;
+    padding: 4px 10px;
   }
 
   .card-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .card-description {
+    font-size: 0.8rem;
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .card-content pre code {
+    padding: 16px;
     font-size: 0.8rem;
   }
 }

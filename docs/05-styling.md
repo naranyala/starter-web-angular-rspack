@@ -5,6 +5,7 @@ Comprehensive guide to CSS architecture, theming, and styling conventions.
 ## Table of Contents
 
 - [Overview](#overview)
+- [Theme System](#theme-system)
 - [CSS Architecture](#css-architecture)
 - [Color System](#color-system)
 - [Typography](#typography)
@@ -20,23 +21,37 @@ Comprehensive guide to CSS architecture, theming, and styling conventions.
 
 | Aspect | Choice | Rationale |
 |--------|--------|-----------|
-| **Strategy** | Component-scoped CSS | Isolation, no conflicts |
-| **Format** | External `.css` files | Separation of concerns |
+| **Strategy** | CSS Custom Properties (Variables) | Centralized theming, easy customization |
+| **Format** | External `.css` files + shared theme | Consistency across components |
 | **Preprocessor** | Plain CSS + SCSS support | Simplicity with power when needed |
-| **Naming** | BEM-inspired | Clear, consistent selectors |
+| **Naming** | BEM-inspired with theme variables | Clear, consistent selectors |
 
-### File Organization
+### Theme System
 
+The application uses a centralized theme system with CSS custom properties.
+
+**Files:**
+- `src/app/shared/theme.css` - CSS variables and global styles
+- `src/app/shared/theme.ts` - TypeScript constants for programmatic access
+
+**Usage in CSS:**
+```css
+.element {
+  color: var(--color-primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+}
 ```
-src/
-├── styles.css              # Global styles
-└── app/
-    ├── home/
-    │   └── home.component.css    # Component styles
-    ├── demo/
-    │   └── demo.component.css
-    └── shared/
-        └── winbox-panel.component.css
+
+**Usage in TypeScript:**
+```typescript
+import { THEME, getCssVariable } from './shared/theme';
+
+// Using constants
+const color = THEME.colors.primary;
+
+// Using CSS variables
+const color = getCssVariable('--color-primary');
 ```
 
 ## CSS Architecture

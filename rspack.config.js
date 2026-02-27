@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlRspackPlugin = require('html-rspack-plugin');
-const { DefinePlugin, ProvidePlugin } = require('@rspack/core');
+const { DefinePlugin, ProvidePlugin, CssExtractRspackPlugin } = require('@rspack/core');
 const net = require('net');
 
 /**
@@ -120,21 +120,23 @@ module.exports = async (env, argv) => {
                   useDefineForClassFields: false,
                   esModuleInterop: true,
                   skipLibCheck: true,
-    },
-    watchOptions: {
-      ignored: /node_modules/,
-    },
+                },
               },
             },
           },
         },
-        {
-          test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
-        },
+        // CSS files - component styles (imported in TS files)
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: isDev
+            ? ['style-loader', 'css-loader']
+            : [CssExtractRspackPlugin.loader, 'css-loader'],
+        },
+        {
+          test: /\.scss$/,
+          use: isDev
+            ? ['style-loader', 'css-loader', 'sass-loader']
+            : [CssExtractRspackPlugin.loader, 'css-loader', 'sass-loader'],
         },
         {
           test: /\.(png|jpe?g|gif|svg|ico)$/,
@@ -145,6 +147,9 @@ module.exports = async (env, argv) => {
           type: 'asset',
         },
       ],
+    },
+    watchOptions: {
+      ignored: /node_modules/,
     },
     plugins: [
       new HtmlRspackPlugin({
@@ -158,6 +163,11 @@ module.exports = async (env, argv) => {
       // Define Angular production mode flag
       new DefinePlugin({
         'ngDevMode': isDev,
+      }),
+      // Extract CSS to separate files in production
+      new CssExtractRspackPlugin({
+        filename: isDev ? '[name].css' : '[name].[contenthash].css',
+        chunkFilename: isDev ? '[id].css' : '[id].[contenthash].css',
       }),
     ],
     optimization: {

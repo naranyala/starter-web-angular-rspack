@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, computed, inject, type OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { WinBoxWindowService, type WinBoxWindow } from './winbox-window.service';
+import { getThemeMode, initTheme, type ThemeMode, toggleTheme } from './theme';
+import { type WinBoxWindow, WinBoxWindowService } from './winbox-window.service';
 import './winbox-panel.component.css';
 
 @Component({
@@ -10,25 +11,26 @@ import './winbox-panel.component.css';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="winbox-panel-container">
-      <!-- Top Row: App Title and Count -->
+      <!-- Top Row: App Title and Actions -->
       <div class="winbox-panel-header">
         <div class="app-title">
           <span class="app-icon">🪟</span>
-          <span class="app-name">Window Manager</span>
-          @if (windowCount() > 0) {
-            <span class="window-count-badge">{{ windowCount() }} window{{ windowCount() > 1 ? 's' : '' }}</span>
-          }
+          <span class="app-name">starter-web-angular-rspack</span>
         </div>
         <div class="header-actions">
-          @if (hasMinimized()) {
-            <button class="header-action-button" (click)="restoreAll()" title="Restore All">
-              ⬆ All
-            </button>
-          }
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" (click)="toggleTheme()" [title]="themeMode() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+            @if (themeMode() === 'dark') {
+              <span class="theme-icon">☀️</span>
+            } @else {
+              <span class="theme-icon">🌙</span>
+            }
+          </button>
           @if (windowCount() > 0) {
-            <button class="header-action-button" (click)="minimizeAll()" title="Minimize All">
-              ⬇ All
+            <button class="header-action-button" (click)="closeAll()" title="Close All Windows">
+              × Close All
             </button>
+            <span class="window-count-badge">{{ windowCount() }} window{{ windowCount() > 1 ? 's' : '' }}</span>
           }
         </div>
       </div>
@@ -68,22 +70,30 @@ import './winbox-panel.component.css';
     </div>
   `,
 })
-export class WinBoxPanelComponent {
+export class WinBoxPanelComponent implements OnInit {
   private windowService = inject(WinBoxWindowService);
 
   windows = computed(() => this.windowService.windowsList());
   windowCount = computed(() => this.windowService.windowsList().length);
-  minimizedCount = computed(() =>
-    this.windowService.windowsList().filter((w) => w.minimized).length
-  );
-  hasMinimized = computed(() => this.windowService.hasMinimized());
-  activeWindow = computed(() => this.windowService.activeWindow());
   hasWindows = computed(() => this.windowService.hasWindows());
+  hasMinimized = computed(() => this.windowService.hasMinimized());
   allHidden = computed(() => this.windowService.areAllHidden());
+
+  themeMode = signal<ThemeMode>('dark');
+
+  ngOnInit(): void {
+    // Initialize theme early - defaults to dark
+    initTheme();
+    this.themeMode.set(getThemeMode());
+  }
+
+  toggleTheme(): void {
+    const newMode = toggleTheme();
+    this.themeMode.set(newMode);
+  }
 
   onHomeClick(event: Event): void {
     event.stopPropagation();
-    // Just hide all visible windows, don't navigate
     this.windowService.hideAll();
   }
 
@@ -94,11 +104,7 @@ export class WinBoxPanelComponent {
     this.windowService.setActiveWindow(win.id);
   }
 
-  minimizeAll(): void {
-    this.windowService.minimizeAll();
-  }
-
-  restoreAll(): void {
-    this.windowService.restoreAll();
+  closeAll(): void {
+    this.windowService.closeAll();
   }
 }

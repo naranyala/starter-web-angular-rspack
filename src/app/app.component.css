@@ -1,5 +1,33 @@
-/* App container - full width */
+/* ============================================
+   App Component Layout - Dark Theme
+   ============================================ */
+
+/* App container - full width with proper spacing */
 :host {
   display: block;
   min-height: 100vh;
+  position: relative;
+}
+
+/* Main content area below panel */
+app-winbox-panel {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* Router outlet content */
+router-outlet + * {
+  display: block;
+  width: 100%;
+  min-height: calc(100vh - var(--panel-height));
+  margin-top: var(--panel-height);
+}
+
+/* Error modal */
+app-error-modal {
+  display: block;
 }

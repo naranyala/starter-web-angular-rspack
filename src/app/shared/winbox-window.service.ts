@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 export interface WinBoxWindow {
   id: string;
@@ -11,7 +11,7 @@ export interface WinBoxWindow {
   createdAt: number;
 }
 
-export const TOP_PANEL_HEIGHT = 76; // Height of the two-row panel (36px + 36px + 4px borders)
+export const TOP_PANEL_HEIGHT = 88; // Height of the two-row panel (44px header + 44px tabs)
 export const WINBOX_TITLE_BAR_HEIGHT = 28; // Approximate WinBox title bar height
 export const WINDOW_TOP_MARGIN = 8; // Additional margin below panel
 
@@ -45,9 +45,13 @@ export class WinBoxWindowService {
       this.windows().forEach((win) => {
         if (win.instance && !win.minimized) {
           // Check if window is maximized (positioned at top with margin)
-          const isMaximized = win.instance.x === 0 && win.instance.y <= (TOP_PANEL_HEIGHT + WINDOW_TOP_MARGIN);
+          const isMaximized =
+            win.instance.x === 0 && win.instance.y <= TOP_PANEL_HEIGHT + WINDOW_TOP_MARGIN;
           if (isMaximized) {
-            win.instance.resize(window.innerWidth, window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN);
+            win.instance.resize(
+              window.innerWidth,
+              window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN
+            );
             win.instance.move(0, TOP_PANEL_HEIGHT + WINDOW_TOP_MARGIN);
           }
         }
@@ -80,16 +84,20 @@ export class WinBoxWindowService {
     // Position window so title bar is visible below the panel with slight margin
     const windowWidth = shouldMaximize
       ? window.innerWidth
-      : (typeof options.width === 'number' ? options.width : 600);
+      : typeof options.width === 'number'
+        ? options.width
+        : 600;
     const windowHeight = shouldMaximize
       ? window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN
-      : (typeof options.height === 'number' ? options.height : 400);
-    const xPos = shouldMaximize
-      ? 0
-      : (typeof options.x === 'number' ? options.x : 20 + offset);
+      : typeof options.height === 'number'
+        ? options.height
+        : 400;
+    const xPos = shouldMaximize ? 0 : typeof options.x === 'number' ? options.x : 20 + offset;
     const yPos = shouldMaximize
       ? TOP_PANEL_HEIGHT + WINDOW_TOP_MARGIN
-      : (typeof options.y === 'number' ? options.y : TOP_PANEL_HEIGHT + 10 + offset);
+      : typeof options.y === 'number'
+        ? options.y
+        : TOP_PANEL_HEIGHT + 10 + offset;
 
     const winboxInstance = new (window as any).WinBox({
       title: options.title,
@@ -135,7 +143,10 @@ export class WinBoxWindowService {
     if (shouldMaximize) {
       // Small delay to ensure WinBox is fully initialized
       setTimeout(() => {
-        winboxInstance.resize(window.innerWidth, window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN);
+        winboxInstance.resize(
+          window.innerWidth,
+          window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN
+        );
         winboxInstance.move(0, TOP_PANEL_HEIGHT + WINDOW_TOP_MARGIN);
         console.log('[WinBoxService] Window positioned:', {
           x: 0,
@@ -143,7 +154,7 @@ export class WinBoxWindowService {
           width: window.innerWidth,
           height: window.innerHeight - TOP_PANEL_HEIGHT - WINDOW_TOP_MARGIN,
           panelHeight: TOP_PANEL_HEIGHT,
-          topMargin: WINDOW_TOP_MARGIN
+          topMargin: WINDOW_TOP_MARGIN,
         });
       }, 100);
     }
@@ -248,7 +259,8 @@ export class WinBoxWindowService {
   }
 
   closeAll(): void {
-    [...this.windows()].forEach((w) => this.closeWindow(w.id));
+    const windowIds = [...this.windows()].map((w) => w.id);
+    windowIds.forEach((id) => this.closeWindow(id));
   }
 
   /**
@@ -279,9 +291,7 @@ export class WinBoxWindowService {
         w.instance.show();
       }
     });
-    this.windows.update((windows) =>
-      windows.map((w) => ({ ...w, minimized: false }))
-    );
+    this.windows.update((windows) => windows.map((w) => ({ ...w, minimized: false })));
     this.allHidden.set(false);
     // Focus the last window
     const lastWindow = windows[windows.length - 1];
