@@ -1,231 +1,298 @@
-# Angular Rspack Demo with WinBox.js Window Manager
+# Starter Web: Angular + Rspack & Hono.js Backend
 
-A modern Angular 21+ application bundled with Rspack, featuring a custom WinBox.js window management system with a sleek top panel interface.
+A full-stack web application starter featuring a modern **Angular 19** frontend with **Rspack** bundler and a **Hono.js** backend with **Drizzle ORM** and **SQLite**.
 
-![Angular](https://img.shields.io/badge/Angular-21-red?logo=angular)
-![Rspack](https://img.shields.io/badge/Rspack-Latest-blue?logo=rspack)
-![Bun](https://img.shields.io/badge/Bun-Runtime-orange?logo=bun)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
+## 📋 Table of Contents
 
-## ✨ Features
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Development](#development)
+- [API Documentation](#api-documentation)
+- [Database Management](#database-management)
+- [Code Quality](#code-quality)
+- [Build & Deploy](#build--deploy)
 
-### 🪟 WinBox.js Window Management
-- **Fixed Top Panel** - Non-collapsible two-row panel (76px total)
-  - Row 1: App title, window count, minimize/restore all buttons
-  - Row 2: Window tabs with color indicators
-- **Auto-Maximized Windows** - Windows fill available space below panel
-- **Tab-Based Navigation** - Click tabs to switch between windows
-- **Home Button** - One-click to hide all windows
-- **Syntax Highlighting** - Prism.js with dark theme for code blocks
-- **Copy to Clipboard** - Click any code block to copy
+## Overview
 
-### 🎨 Modern UI/UX
-- **Single-Column Card Layout** - Compact, scannable design
-- **Sticky Search** - Stays visible while scrolling
-- **Hover Effects** - Subtle animations on interaction
-- **Responsive Design** - Mobile-optimized layouts
-- **Dark Theme Code** - Beautiful syntax highlighting
+This monorepo provides a complete full-stack development environment:
 
-### ⚡ Performance
-- **Rspack Bundling** - Lightning-fast builds (Rust-based)
-- **Bun Runtime** - Faster than Node.js
-- **Lazy Loading** - Components loaded on demand
-- **Tree Shaking** - Unused code eliminated
-- **Code Splitting** - Optimized bundle sizes
+| Package | Description |
+|---------|-------------|
+| `frontend/` | Angular 19 SPA with Rspack bundler and Bun runtime |
+| `backend/` | REST API with Hono.js, Drizzle ORM, SQLite on Bun |
 
-## 🚀 Quick Start
+### Key Features
 
-### Prerequisites
-- [Bun](https://bun.sh/) (v1.0 or higher)
-- Node.js 18+ (optional, Bun is preferred)
+- ⚡ **Fast Development** - Rspack + Bun for rapid builds and hot reload
+- 🏗️ **Clean Architecture** - DI pattern with Controllers → Services → Repositories
+- 📦 **Type-Safe** - Full TypeScript support across frontend and backend
+- 🗄️ **SQLite Database** - Lightweight database with Drizzle ORM migrations
+- 🎨 **Code Quality** - Biome for fast linting and formatting
 
-### Installation
-
-```bash
-# Install dependencies
-bun install
-
-# Setup Prism.js for syntax highlighting
-bun run setup:prism
-
-# Start development server
-bun run dev
-```
-
-Open [http://localhost:4200](http://localhost:4200) in your browser.
-
-### Build for Production
-
-```bash
-# Build with Rspack
-bun run build:rspack
-
-# Output: dist/angular-rspack-demo/
-```
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 starter-web-angular-rspack/
-├── src/
-│   ├── app/
-│   │   ├── home/           # Home page with component cards
-│   │   ├── demo/           # Technology stack demo page
-│   │   ├── shared/         # Shared components & services
-│   │   │   ├── winbox-window.service.ts   # Window management
-│   │   │   ├── winbox-panel.component.ts  # Top panel UI
-│   │   │   └── index.ts
-│   │   ├── devtools/       # Angular DevTools (optional)
-│   │   └── error-handling/ # Error handling utilities
-│   ├── assets/             # Static assets
-│   ├── environments/       # Environment configs
-│   ├── styles.css          # Global styles
-│   ├── index.html          # Main HTML with Prism.js
-│   └── main.ts             # Application entry point
-├── public/
-│   └── prism/              # Prism.js files (offline)
-├── scripts/
-│   └── copy-prism.js       # Copy Prism to public folder
-├── docs/                   # Documentation
-├── rspack.config.js        # Rspack configuration
-├── angular.json            # Angular configuration
-├── package.json            # Dependencies & scripts
-├── tsconfig.json           # TypeScript configuration
-└── bunfig.toml            # Bun configuration
+├── frontend/                 # Angular 19 + Rspack
+│   ├── src/                  # Application source code
+│   ├── rspack.config.js      # Rspack bundler configuration
+│   ├── angular.json          # Angular CLI configuration
+│   ├── biome.json            # Biome linter/formatter config
+│   └── package.json
+├── backend/                  # Hono.js + Drizzle + Bun
+│   ├── src/
+│   │   ├── controllers/      # HTTP request handlers
+│   │   ├── services/         # Business logic layer
+│   │   ├── repositories/     # Data access layer
+│   │   ├── routes/           # Route definitions
+│   │   ├── db/               # Database schema & config
+│   │   ├── container/        # Dependency Injection
+│   │   └── types/            # TypeScript types
+│   ├── drizzle/              # Database migrations
+│   ├── drizzle.config.ts     # Drizzle configuration
+│   └── package.json
+└── README.md
 ```
 
-## 📖 Documentation
+## Tech Stack
 
-Detailed documentation is available in the [`docs/`](./docs/) folder:
-
-- **[Getting Started](./docs/01-getting-started.md)** - Setup and installation guide
-- **[Architecture](./docs/02-architecture.md)** - Application structure and design patterns
-- **[WinBox Panel](./docs/03-winbox-panel.md)** - Window management system details
-- **[Components](./docs/04-components.md)** - Component documentation
-- **[Styling Guide](./docs/05-styling.md)** - CSS and theming guide
-- **[Build & Deploy](./docs/06-build-deploy.md)** - Build process and deployment
-- **[Improvement Suggestions](./docs/07-improvements.md)** - Future enhancement ideas
-
-## 🛠 Available Scripts
-
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start development server with HMR |
-| `bun run build:rspack` | Production build with Rspack |
-| `bun run serve:rspack` | Serve production build locally |
-| `bun run setup:prism` | Copy Prism.js files to public folder |
-| `bun run test` | Run unit tests |
-| `bun run test:watch` | Run tests in watch mode |
-| `bun run lint` | Run Biome linter (auto-fix) |
-| `bun run lint:check` | Check code without fixing |
-| `bun run format` | Format code with Biome |
-| `bun run e2e` | Run Playwright E2E tests |
-
-## 🎯 Key Technologies
+### Frontend
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Angular | 21.x | Frontend framework |
-| Rspack | Latest | Rust-based bundler |
-| Bun | 1.x | JavaScript runtime |
-| TypeScript | 5.9 | Type-safe JavaScript |
-| WinBox.js | 0.2.x | Window management |
-| Prism.js | 1.29.x | Syntax highlighting |
-| Biome | 2.x | Linter & formatter |
-| Playwright | 1.x | E2E testing |
+| Angular | 19.2 | UI Framework |
+| Rspack | 1.3.5 | Fast Rust-based bundler |
+| Bun | 1.3 | Fast JavaScript runtime |
+| Biome | 2.4.2 | Linter & formatter |
+| RxJS | 7.8 | Reactive programming |
+| Sass | 1.97 | CSS preprocessor |
 
-## 🎨 UI Components
+### Backend
 
-### Top Panel (76px)
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ 🪟 Window Manager    [3 windows]          ⬆ All  ⬇ All         │ ← Header (36px)
-├─────────────────────────────────────────────────────────────────┤
-│ 🏠 Home │ ● Tab1 │ ● Tab2 │ ● Tab3 │                           │ ← Tabs (36px)
-└─────────────────────────────────────────────────────────────────┘
-```
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Hono.js | Latest | Lightweight web framework |
+| Drizzle ORM | Latest | Type-safe ORM |
+| SQLite | - | Embedded database |
+| Bun | Latest | Runtime & package manager |
+| TypeScript | - | Type safety |
 
-### Card Layout
-```
-┌──────────────────────────────────────────────┐
-│ [UI]  Accordion Component                    │
-│       Expandable panels with smooth anims    │
-└──────────────────────────────────────────────┘
+## Prerequisites
+
+- **Bun** v1.3+ (recommended) or Node.js v18+
+- Install Bun:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
 ```
 
-### Code Block with Syntax Highlighting
-```
-┌──────────────────────────────────────────────┐
-│ typescript  ·  Click to copy                │
-├──────────────────────────────────────────────┤
-│ @Component({                                 │
-│   selector: 'app-root',                      │
-│   template: '<h1>Hello</h1>'                 │
-│ })                                           │
-└──────────────────────────────────────────────┘
+## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd starter-web-angular-rspack
 ```
 
-## 🔧 Configuration
+### 2. Install Dependencies
 
-### Rspack Configuration
-- TypeScript compilation with esbuild-loader
-- SCSS/CSS processing
-- Asset handling (images, fonts)
-- Code splitting and optimization
-- Development server with HMR
+```bash
+# Install frontend dependencies
+cd frontend
+bun install
 
-### Angular Configuration
-- JIT compilation for development
-- Standalone components
-- Signal-based reactivity
-- Lazy loading support
+# Install backend dependencies
+cd ../backend
+bun install
+```
 
-### Bun Configuration
-- Fast package installation
-- Native test runner
-- Script execution
+### 3. Setup Database
 
-## 📊 Performance Metrics
+```bash
+cd backend
 
-| Metric | Target | Achieved |
-|--------|--------|----------|
-| Initial Load | < 2s | ~1.2s |
-| Time to Interactive | < 3s | ~1.8s |
-| Bundle Size | < 500KB | ~380KB |
-| Lighthouse Score | > 90 | 94 |
+# Generate initial migrations
+bun run db:generate
 
-## 🤝 Contributing
+# Apply migrations
+bun run db:migrate
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### 4. Start Development Servers
 
-### Code Style
-- Use Biome for linting and formatting
-- Follow Angular style guide
-- Write meaningful commit messages
-- Add tests for new features
+**Terminal 1 - Backend:**
 
-## 📝 License
+```bash
+cd backend
+bun run dev
+```
 
-This project is open source and available under the [MIT License](LICENSE).
+Backend runs on `http://localhost:3000`
 
-## 🙏 Acknowledgments
+**Terminal 2 - Frontend:**
 
-- [Angular Team](https://angular.io/) for the amazing framework
-- [Rspack Team](https://rspack.dev/) for the blazing-fast bundler
-- [Bun Team](https://bun.sh/) for the next-gen runtime
-- [WinBox.js](https://winbox.krawaller.se/) for the window management library
-- [Prism.js](https://prismjs.com/) for syntax highlighting
+```bash
+cd frontend
+bun run dev
+```
 
-## 📞 Support
+Frontend runs on `http://localhost:4200`
 
-- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-repo/discussions)
-- **Documentation**: [./docs/](./docs/)
+## Development
+
+### Frontend Commands
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start Rspack dev server with HMR |
+| `bun run serve:rspack` | Start Rspack dev server |
+| `bun run start` | Start Angular CLI dev server (webpack) |
+| `bun run build:rspack` | Production build with Rspack |
+| `bun run build` | Production build with Angular CLI |
+| `bun run test` | Run unit tests with Karma |
+| `bun run lint` | Check code with Biome |
+| `bun run lint:fix` | Auto-fix linting issues |
+| `bun run format` | Check formatting |
+| `bun run format:fix` | Auto-fix formatting |
+
+### Backend Commands
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start dev server with hot reload |
+| `bun run start` | Start production server |
+| `bun run db:generate` | Generate migrations after schema changes |
+| `bun run db:migrate` | Apply migrations to database |
+| `bun run db:studio` | Open Drizzle Studio (database GUI) |
+
+## API Documentation
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Health check |
+| GET | `/api/users` | List all users |
+| GET | `/api/users/:id` | Get user by ID |
+| POST | `/api/users` | Create user |
+| PUT | `/api/users/:id` | Update user |
+| DELETE | `/api/users/:id` | Delete user |
+
+### Example Requests
+
+```bash
+# Create a user
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+
+# Get all users
+curl http://localhost:3000/api/users
+
+# Get user by ID
+curl http://localhost:3000/api/users/1
+
+# Update user
+curl -X PUT http://localhost:3000/api/users/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Updated"}'
+
+# Delete user
+curl -X DELETE http://localhost:3000/api/users/1
+```
+
+## Database Management
+
+### Schema Location
+
+Database schema is defined in `backend/src/db/schema.ts`.
+
+### Migrations Workflow
+
+1. Modify the schema in `backend/src/db/schema.ts`
+2. Generate migration: `bun run db:generate`
+3. Apply migration: `bun run db:migrate`
+
+### Database GUI
+
+Open Drizzle Studio to browse and edit data:
+
+```bash
+cd backend
+bun run db:studio
+```
+
+## Code Quality
+
+### Linting & Formatting
+
+This project uses **Biome** (faster alternative to ESLint + Prettier).
+
+```bash
+# Frontend
+cd frontend
+bun run lint
+bun run lint:fix
+bun run format
+bun run format:fix
+
+# Backend (configure Biome similarly if needed)
+```
+
+### Architecture Guidelines
+
+Backend follows a clean architecture pattern:
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐     ┌──────────┐
+│ Controllers │ ──► │   Services   │ ──► │  Repositories   │ ──► │ Database │
+└─────────────┘     └──────────────┘     └─────────────────┘     └──────────┘
+       ▲                   ▲                    ▲
+       └───────────────────┴────────────────────┘
+                    DI Container
+```
+
+- **Controllers**: Handle HTTP requests/responses
+- **Services**: Business logic and orchestration
+- **Repositories**: Data access and queries
+- **Container**: Dependency injection management
+
+## Build & Deploy
+
+### Production Build
+
+```bash
+# Build frontend
+cd frontend
+bun run build:rspack
+# Output: dist/
+
+# Build backend
+cd ../backend
+# No build step needed (Bun runs TypeScript directly)
+```
+
+### Deployment Considerations
+
+1. **Frontend**: Deploy `frontend/dist/` contents to a static hosting or CDN
+2. **Backend**: Deploy the entire `backend/` folder to a server that supports Bun
+3. **Database**: Copy `sqlite.db` or configure production database path
+4. **Environment**: Set appropriate environment variables for production
+
+### Environment Variables
+
+Configure as needed in your deployment environment:
+
+- Backend server port (default: 3000)
+- Database path
+- CORS settings for frontend-backend communication
 
 ---
 
-Built with ❤️ using Angular, Rspack, and Bun
+## License
+
+This project is provided as-is for educational and starter purposes.
