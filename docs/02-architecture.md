@@ -20,7 +20,7 @@ This document describes the application architecture, design patterns, and techn
 ┌─────────────────────────────────────────────────────────────┐
 │                      Frontend Layer                         │
 ├─────────────────────────────────────────────────────────────┤
-│  Angular 21.x (Component Framework)                         │
+│  Angular 19.x (Component Framework)                         │
 │  ├── Signals (Reactivity)                                   │
 │  ├── Standalone Components                                  │
 │  └── Dependency Injection                                   │
@@ -100,7 +100,7 @@ src/
 │   │   ├── winbox-panel.component.css
 │   │   └── index.ts              # Barrel exports
 │   │
-│   ├── devtools/                 # Angular DevTools (optional)
+│   ├── devtools/                 # DevTools panel (optional)
 │   │   ├── devtools-panel.component.ts
 │   │   ├── console/
 │   │   ├── components/

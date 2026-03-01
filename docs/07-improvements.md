@@ -617,24 +617,24 @@ translate(key: string): string {
 ## Implementation Roadmap
 
 ### Phase 1 (Month 1)
-- [ ] Add keyboard shortcuts (#3)
-- [ ] Persist window state (#4)
-- [ ] Add unit tests (#1)
+- Add keyboard shortcuts (#3)
+- Persist window state (#4)
+- Add unit tests (#1)
 
 ### Phase 2 (Month 2)
-- [ ] Add E2E tests (#2)
-- [ ] Add window resize (#5)
-- [ ] Add window search (#7)
+- Add E2E tests (#2)
+- Add window resize (#5)
+- Add window search (#7)
 
 ### Phase 3 (Month 3)
-- [ ] Add dark/light theme (#10)
-- [ ] Add drag-and-drop (#9)
-- [ ] Add window preview (#8)
+- Add dark/light theme (#10)
+- Add drag-and-drop (#9)
+- Add window preview (#8)
 
 ### Phase 4 (Future)
-- [ ] Add window groups (#6)
-- [ ] Add PWA support (#16)
-- [ ] Add i18n (#17)
+- Add window groups (#6)
+- Add PWA support (#16)
+- Add i18n (#17)
 
 ---
 

@@ -16,7 +16,7 @@ This guide will help you set up and run the Angular Rspack Demo project on your 
 
 | Software | Version | Purpose | Download |
 |----------|---------|---------|----------|
-| **Bun** | 1.0+ | Runtime & Package Manager | [bun.sh](https://bun.sh/) |
+| **Bun** | 1.0+ | Runtime and Package Manager | [bun.sh](https://bun.sh/) |
 | **Git** | Latest | Version Control | [git-scm.com](https://git-scm.com/) |
 
 ### Optional Software
@@ -59,32 +59,11 @@ bun install
 ```
 
 This will install:
-- Angular 21.x
+- Angular 19.x
 - Rspack
-- WinBox.js
-- Prism.js
 - Biome (linter)
-- Playwright (E2E testing)
 
-### 3. Setup Prism.js
-
-```bash
-bun run setup:prism
-```
-
-This copies Prism.js syntax highlighting files from `node_modules` to the `public/prism/` folder for offline use.
-
-**What gets copied:**
-```
-public/prism/
-├── prism.js                 # Core library (58KB)
-├── prism-typescript.min.js  # TypeScript highlighting
-├── prism-css.min.js         # CSS highlighting
-├── prism-scss.min.js        # SCSS highlighting
-└── prism-dark.min.css       # Dark theme
-```
-
-### 4. Start Development Server
+### 3. Start Development Server
 
 ```bash
 bun run dev
@@ -93,10 +72,10 @@ bun run dev
 The application will start at `http://localhost:4200`
 
 **Features:**
-- ✅ Hot Module Replacement (HMR)
-- ✅ Live reload on file changes
-- ✅ Source maps for debugging
-- ✅ Automatic port selection (if 4200 is busy)
+- Hot Module Replacement (HMR)
+- Live reload on file changes
+- Source maps for debugging
+- Automatic port selection (if 4200 is busy)
 
 ## Development
 

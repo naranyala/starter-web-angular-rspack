@@ -1,19 +1,19 @@
 # Documentation Index
 
-Welcome to the Angular Rspack Demo with WinBox.js documentation.
+Welcome to the Angular Rspack Demo documentation.
 
-## 📚 Documentation Structure
+## Documentation Structure
 
 ### Getting Started
-- **[Getting Started](./01-getting-started.md)** - Installation, setup, and first steps
+- [Getting Started](./01-getting-started.md) - Installation, setup, and first steps
   - Prerequisites
   - Installation guide
   - Development server
   - Building for production
   - Troubleshooting
 
-### Architecture & Design
-- **[Architecture](./02-architecture.md)** - Application structure and patterns
+### Architecture and Design
+- [Architecture](./02-architecture.md) - Application structure and patterns
   - Technology stack
   - File organization
   - Component architecture
@@ -23,7 +23,7 @@ Welcome to the Angular Rspack Demo with WinBox.js documentation.
   - Design patterns
 
 ### Features
-- **[WinBox Panel](./03-winbox-panel.md)** - Window management system
+- [WinBox Panel](./03-winbox-panel.md) - Window management system
   - Panel structure (two-row design)
   - Window lifecycle
   - Service API reference
@@ -32,15 +32,22 @@ Welcome to the Angular Rspack Demo with WinBox.js documentation.
   - Code block features
   - Best practices
 
+- [DevTools](./08-devtools.md) - Collapsible bottom debugging panel
+  - Overview and features
+  - Component API
+  - Tabs reference
+  - Styling
+  - Customization
+
 ### Development
-- **[Components](./04-components.md)** - Component documentation
+- [Components](./04-components.md) - Component documentation
   - Page components (Home, Demo)
   - Shared components (WinBoxPanel)
   - Optional components (DevTools)
   - Component patterns
   - Testing guide
 
-- **[Styling](./05-styling.md)** - CSS and theming guide
+- [Styling](./05-styling.md) - CSS and theming guide
   - CSS architecture
   - Color system
   - Typography
@@ -50,7 +57,7 @@ Welcome to the Angular Rspack Demo with WinBox.js documentation.
   - Best practices
 
 ### Deployment
-- **[Build & Deploy](./06-build-deploy.md)** - Build and deployment guide
+- [Build and Deploy](./06-build-deploy.md) - Build and deployment guide
   - Build process
   - Configuration
   - Optimization techniques
@@ -60,14 +67,24 @@ Welcome to the Angular Rspack Demo with WinBox.js documentation.
   - Monitoring
 
 ### Future
-- **[Improvement Suggestions](./07-improvements.md)** - Future enhancements
+- [Improvement Suggestions](./07-improvements.md) - Future enhancements
   - High priority improvements
   - Medium priority features
   - Low priority enhancements
   - Technical debt
   - Implementation roadmap
 
-## 📖 Quick Reference
+### DevTools
+- [DevTools Guide](./08-devtools.md) - DevTools panel documentation
+  - Overview and features
+  - Component API
+  - Tabs reference
+  - Styling
+  - Customization
+
+---
+
+## Quick Reference
 
 ### Commands
 
@@ -98,6 +115,7 @@ src/
 ├── app/
 │   ├── home/           # Home page
 │   ├── demo/           # Demo page
+│   ├── devtools/       # DevTools panel
 │   └── shared/         # Shared components
 ├── styles.css          # Global styles
 └── index.html          # Main HTML
@@ -109,20 +127,22 @@ docs/
 ├── 04-components.md
 ├── 05-styling.md
 ├── 06-build-deploy.md
-└── 07-improvements.md
+├── 07-improvements.md
+└── 08-devtools.md
 ```
 
 ### Key Technologies
 
-| Technology | Purpose | Docs |
-|------------|---------|------|
-| Angular 21 | Frontend framework | [angular.io](https://angular.io/docs) |
+| Technology | Purpose | Documentation |
+|------------|---------|---------------|
+| Angular 19 | Frontend framework | [angular.io](https://angular.io/docs) |
 | Rspack | Bundler | [rspack.dev](https://rspack.dev/) |
 | Bun | Runtime | [bun.sh](https://bun.sh/docs) |
-| WinBox.js | Window management | [winbox.krawaller.se](https://winbox.krawaller.se/) |
-| Prism.js | Syntax highlighting | [prismjs.com](https://prismjs.com/) |
+| Biome | Linter/Formatter | [biomejs.dev](https://biomejs.dev/) |
 
-## 🎯 Common Tasks
+---
+
+## Common Tasks
 
 ### Adding a New Component
 
@@ -160,20 +180,6 @@ const routes: Routes = [
 ];
 ```
 
-### Creating a WinBox Window
-
-```typescript
-// Inject service
-private windowService = inject(WinBoxWindowService);
-
-// Create window
-this.windowService.createWindow({
-  title: 'My Window',
-  html: '<div>Content</div>',
-  background: '#3498db',
-});
-```
-
 ### Adding Styles
 
 ```css
@@ -185,36 +191,39 @@ this.windowService.createWindow({
 }
 ```
 
-## 🔗 External Resources
+---
+
+## External Resources
 
 ### Official Documentation
 - [Angular Documentation](https://angular.io/docs)
 - [Rspack Documentation](https://rspack.dev/)
 - [Bun Documentation](https://bun.sh/docs)
 - [TypeScript Documentation](https://typescriptlang.org/docs)
+- [Biome Documentation](https://biomejs.dev/)
 
-### Tools & Libraries
+### Tools and Libraries
 - [WinBox.js](https://winbox.krawaller.se/)
 - [Prism.js](https://prismjs.com/)
-- [Biome](https://biomejs.dev/)
-- [Playwright](https://playwright.dev/)
 
-### Tutorials & Guides
+### Tutorials and Guides
 - [Angular University](https://angular-university.io/)
 - [NetBasics](https://netbasal.com/)
 - [inDepth.dev](https://indepth.dev/)
 
-## 📞 Support
+---
+
+## Support
 
 - **GitHub Issues**: Report bugs and request features
 - **GitHub Discussions**: Ask questions and share ideas
 - **Documentation**: Browse the docs folder
 
-## 📝 Contributing
+## Contributing
 
 See [README.md](../README.md#contributing) for contribution guidelines.
 
 ---
 
-**Last Updated:** February 2025
+**Last Updated:** March 2026
 **Version:** 1.0.0

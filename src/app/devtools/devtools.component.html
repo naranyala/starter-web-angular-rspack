@@ -1,0 +1,405 @@
+<div class="devtools-container" [class.expanded]="isExpanded()">
+  <!-- Collapsed Bar -->
+  <div class="devtools-bar" (click)="toggle()">
+    <div class="devtools-bar-content">
+      <span class="devtools-icon">&#9881;</span>
+      <span class="devtools-text">DevTools</span>
+      <span class="devtools-hint">
+        {{ isExpanded() ? '▼' : '▲' }}
+        {{ activeTabLabel() }}: {{ getSummary() }}
+        <span class="uptime">| Uptime: {{ sessionDuration() }}</span>
+      </span>
+    </div>
+    <span class="devtools-toggle-icon">{{ isExpanded() ? '−' : '+' }}</span>
+  </div>
+
+  <!-- Expanded Panel -->
+  <div class="devtools-panel">
+    <!-- Tabs Header -->
+    <div class="tabs-header">
+      @for (tab of tabs(); track tab.id) {
+        <button
+          class="tab-button"
+          [class.active]="activeTab() === tab.id"
+          (click)="selectTab(tab.id)"
+        >
+          {{ tab.label }}
+          @if (tab.badge && tab.badge > 0) {
+            <span class="tab-badge">{{ tab.badge }}</span>
+          }
+        </button>
+      }
+      <div class="tabs-spacer"></div>
+      <button class="close-button" (click)="toggle()" title="Close DevTools">
+        ▼
+      </button>
+    </div>
+
+    <!-- Tabs Content -->
+    <div class="tabs-content">
+      <!-- Info Tab -->
+      @if (activeTab() === 'info') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Application Information</h3>
+            <span class="panel-uptime">Session Uptime: {{ sessionDuration() }}</span>
+          </div>
+          <div class="info-sections">
+            <div class="info-section">
+              <h4>Application</h4>
+              @for (item of appInfo().filter(i => i.category === 'app'); track item.label) {
+                <div class="info-row">
+                  <span class="info-label">{{ item.label }}</span>
+                  <span class="info-value">{{ item.value }}</span>
+                </div>
+              }
+            </div>
+            <div class="info-section">
+              <h4>Build</h4>
+              @for (item of appInfo().filter(i => i.category === 'build'); track item.label) {
+                <div class="info-row">
+                  <span class="info-label">{{ item.label }}</span>
+                  <span class="info-value">{{ item.value }}</span>
+                </div>
+              }
+            </div>
+            <div class="info-section">
+              <h4>Runtime</h4>
+              @for (item of appInfo().filter(i => i.category === 'runtime'); track item.label) {
+                <div class="info-row">
+                  <span class="info-label">{{ item.label }}</span>
+                  <span class="info-value">{{ item.value }}</span>
+                </div>
+              }
+            </div>
+            <div class="info-section">
+              <h4>Browser</h4>
+              @for (item of appInfo().filter(i => i.category === 'browser'); track item.label) {
+                <div class="info-row">
+                  <span class="info-label">{{ item.label }}</span>
+                  <span class="info-value">{{ item.value }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Routes Tab -->
+      @if (activeTab() === 'routes') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Route History</h3>
+            <span class="current-route">Current: {{ currentRoute() }}</span>
+          </div>
+          @if (routes().length > 0) {
+            <div class="routes-list">
+              @for (route of routes(); track route.timestamp) {
+                <div class="route-item">
+                  <span class="route-timestamp">{{ route.timestamp }}</span>
+                  <span class="route-path">{{ route.path }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="empty-state">No navigation events recorded</p>
+          }
+        </div>
+      }
+
+      <!-- Components Tab -->
+      @if (activeTab() === 'components') {
+        <div class="tab-panel">
+          <h3>Component Tree</h3>
+          <div class="component-tree">
+            @for (comp of componentTree(); track comp.name) {
+              <div class="component-item" [style.paddingLeft.px]="comp.depth * 20">
+                <span class="component-icon">&#9632;</span>
+                <span class="component-name">{{ comp.name }}</span>
+                @if (comp.inputs) {
+                  <span class="component-inputs">{{ comp.inputs | json }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- State Tab -->
+      @if (activeTab() === 'state') {
+        <div class="tab-panel">
+          <h3>Panel State</h3>
+          <div class="info-grid">
+            <div class="info-row">
+              <span class="info-label">Panel Expanded</span>
+              <span class="info-value">{{ panelState().expanded ? 'Yes' : 'No' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Active Tab</span>
+              <span class="info-value">{{ panelState().activeTab }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Session Uptime</span>
+              <span class="info-value">{{ panelState().uptime }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Update</span>
+              <span class="info-value">{{ panelState().lastUpdate }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Events Tab -->
+      @if (activeTab() === 'events') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Event Log</h3>
+            <span class="event-count">{{ events().length }} events</span>
+          </div>
+          <div class="events-list">
+            @for (event of events(); track event) {
+              <div class="event-item">{{ event }}</div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Console Tab -->
+      @if (activeTab() === 'console') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Console Output</h3>
+            <div class="tab-actions">
+              <span class="console-stats">
+                {{ consoleLogs().length }} logs
+                @if (consoleErrorCount() > 0) {
+                  <span class="error-count">({{ consoleErrorCount() }} errors)</span>
+                }
+              </span>
+              <button class="action-button" (click)="clearConsole()">Clear</button>
+            </div>
+          </div>
+          @if (consoleLogs().length > 0) {
+            <div class="console-list">
+              @for (log of consoleLogs(); track log.timestamp) {
+                <div class="console-item" [class]="'console-' + log.type">
+                  <span class="console-timestamp">{{ log.timestamp }}</span>
+                  <span class="console-type">{{ log.type | uppercase }}</span>
+                  <span class="console-message">{{ log.message }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="empty-state">No console logs captured</p>
+          }
+        </div>
+      }
+
+      <!-- Network Tab -->
+      @if (activeTab() === 'network') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Network Requests</h3>
+            <div class="tab-actions">
+              <span class="network-stats">{{ networkRequests().length }} requests</span>
+              <button class="action-button" (click)="clearNetwork()">Clear</button>
+            </div>
+          </div>
+          @if (networkRequests().length > 0) {
+            <div class="network-list">
+              <div class="network-header">
+                <span class="network-col-method">Method</span>
+                <span class="network-col-url">URL</span>
+                <span class="network-col-status">Status</span>
+                <span class="network-col-time">Time</span>
+                <span class="network-col-timestamp">Timestamp</span>
+              </div>
+              @for (req of networkRequests(); track req.id) {
+                <div class="network-item">
+                  <span class="network-method" [class]="'method-' + req.method.toLowerCase()">{{ req.method }}</span>
+                  <span class="network-url" [title]="req.url">{{ req.url | slice:0:50 }}{{ req.url.length > 50 ? '...' : '' }}</span>
+                  <span class="network-status" [class]="'status-' + (req.status === 0 ? 'error' : req.status < 400 ? 'success' : 'error')">
+                    {{ req.status || '-' }}
+                  </span>
+                  <span class="network-duration">{{ req.duration !== undefined ? req.duration + 'ms' : '-' }}</span>
+                  <span class="network-timestamp">{{ req.timestamp }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="empty-state">No network requests captured</p>
+          }
+        </div>
+      }
+
+      <!-- Storage Tab -->
+      @if (activeTab() === 'storage') {
+        <div class="tab-panel">
+          <div class="tab-header-with-actions">
+            <h3>Storage Inspector</h3>
+            <div class="tab-actions">
+              <span class="storage-stats">
+                Local: {{ localStorageItems().length }} | Session: {{ sessionStorageItems().length }}
+              </span>
+              <button class="action-button" (click)="clearStorage('local')">Clear Local</button>
+              <button class="action-button" (click)="clearStorage('session')">Clear Session</button>
+            </div>
+          </div>
+          <div class="storage-sections">
+            <div class="storage-section">
+              <h4>LocalStorage ({{ localStorageItems().length }} items)</h4>
+              @if (localStorageItems().length > 0) {
+                <div class="storage-list">
+                  @for (item of localStorageItems(); track item.key) {
+                    <div class="storage-item">
+                      <span class="storage-key">{{ item.key }}</span>
+                      <span class="storage-value" [title]="item.value">{{ item.value | slice:0:80 }}{{ item.value.length > 80 ? '...' : '' }}</span>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="empty-state">No localStorage items</p>
+              }
+            </div>
+            <div class="storage-section">
+              <h4>SessionStorage ({{ sessionStorageItems().length }} items)</h4>
+              @if (sessionStorageItems().length > 0) {
+                <div class="storage-list">
+                  @for (item of sessionStorageItems(); track item.key) {
+                    <div class="storage-item">
+                      <span class="storage-key">{{ item.key }}</span>
+                      <span class="storage-value" [title]="item.value">{{ item.value | slice:0:80 }}{{ item.value.length > 80 ? '...' : '' }}</span>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="empty-state">No sessionStorage items</p>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Performance Tab -->
+      @if (activeTab() === 'performance') {
+        <div class="tab-panel">
+          <h3>Performance Metrics</h3>
+          <div class="performance-sections">
+            <div class="performance-section">
+              <h4>Timing</h4>
+              @for (metric of performanceMetrics().filter(m => m.category === 'timing'); track metric.name) {
+                <div class="performance-item">
+                  <span class="performance-name">{{ metric.name }}</span>
+                  <div class="performance-bar-container">
+                    <div class="performance-bar" [style.width.%]="Math.min(metric.value / 10, 100)"></div>
+                  </div>
+                  <span class="performance-value">{{ metric.value }} {{ metric.unit }}</span>
+                </div>
+              }
+            </div>
+            <div class="performance-section">
+              <h4>Resources</h4>
+              @for (metric of performanceMetrics().filter(m => m.category === 'resource'); track metric.name) {
+                <div class="performance-item">
+                  <span class="performance-name">{{ metric.name }}</span>
+                  <span class="performance-value">{{ metric.value }} {{ metric.unit }}</span>
+                </div>
+              }
+            </div>
+            <div class="performance-section">
+              <h4>Memory</h4>
+              @for (metric of performanceMetrics().filter(m => m.category === 'memory'); track metric.name) {
+                <div class="performance-item">
+                  <span class="performance-name">{{ metric.name }}</span>
+                  <span class="performance-value">{{ metric.value }} {{ metric.unit }}</span>
+                </div>
+              }
+              @if (performanceMetrics().filter(m => m.category === 'memory').length === 0) {
+                <p class="empty-state">Memory metrics not available (Chrome only)</p>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Settings Tab -->
+      @if (activeTab() === 'settings') {
+        <div class="tab-panel">
+          <h3>Settings</h3>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">Panel Height</span>
+                <span class="setting-description">Current expanded height in pixels</span>
+              </div>
+              <span class="setting-value">{{ EXPANDED_HEIGHT }}px</span>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">Collapsed Height</span>
+                <span class="setting-description">Height when collapsed</span>
+              </div>
+              <span class="setting-value">{{ COLLAPSED_HEIGHT }}px</span>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">Total Tabs</span>
+                <span class="setting-description">Number of available tabs</span>
+              </div>
+              <span class="setting-value">{{ tabs().length }}</span>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">Auto-refresh</span>
+                <span class="setting-description">Performance metrics auto-refresh</span>
+              </div>
+              <span class="setting-value">Enabled</span>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h4>Available Features</h4>
+            <div class="features-list">
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Application information display</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Route history tracking</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Component tree visualization</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Panel state monitoring</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Event logging system</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Console output interception</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Network request monitoring</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Storage inspector (Local/Session)</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">&#10003;</span>
+                <span>Performance metrics display</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
